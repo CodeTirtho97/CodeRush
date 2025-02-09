@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Raleway:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    width: 420px;
+    height: auto; /* Expands dynamically */
+    min-height: 700px; /* Ensures enough space */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #f5f7fa, #dce4f0);
+    color: #333;
+    border-radius: 10px;
+    overflow-x: hidden; /* Removes horizontal scroll */
+    overflow-y: auto; /* Allows proper scrolling */
+}
+
+/* 🔹 Main Popup Container */
+#popup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 100vh;
+    padding: 15px;
+    background: transparent;
+    border-radius: 10px;
+}
+
+/* 🔹 Header Section */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    letter-spacing: 0.8px;
+    font-family: 'Raleway', sans-serif;
+    color: #222;
+}
+
+p {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: #555;
+    text-align: center;
+    display: block;
+}
+
+/* 🔹 Contest List */
+#contest-list {
+    flex-grow: 1;
+    width: 100%;
+    height: auto; /* Allows full expansion */
+    max-height: none; /* Prevents fixed height causing scroll */
+    overflow-y: visible; /* Removes internal scrolling */
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 10px;
+    color: #222;
+}
+
+/* 🔹 Individual Contest Cards */
+.contest-card {
+    background: #fff;
+    color: #333;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+
+.contest-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
+}
+
+.contest-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
+}
+
+.contest-card p {
+    font-size: 14px;
+    margin: 4px 0;
+    font-weight: 500;
+    color: #444;
+}
+
+/* 🔹 View Contest Button */
+/* 🔹 Contest Card Actions */
+.contest-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* 🔹 View Contest Button */
+.contest-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    background: #f48c06;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.contest-link:hover {
+    background: #d00000;
+    transform: scale(1.05);
+}
+
+/* 🔹 Reminder & Google Calendar Buttons */
+.reminder-btn, .calendar-btn {
+    border: none;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 🎨 Hover Effect: Show Functionality */
+.reminder-btn:hover {
+    background: #52b788;
+    transform: scale(1.1);
+}
+
+.calendar-btn:hover {
+    background: #b8c0ff;
+    transform: scale(1.1);
+}
+
+/* 🔹 Tab Selection */
+#tab-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    width: 90%;
+    margin-bottom: 15px;
+}
+
+.platform-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #007acc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+    flex-shrink: 0;
+}
+
+.platform-tab img {
+    width: 20px;
+    height: 20px;
+}
+
+.platform-tab:hover {
+    background: #005fa3;
+}
+
+.active-tab {
+    background: #ff9800;
+    transform: scale(1.08);
+}
+
+/* 🔄 Refresh Button */
+#refresh-btn {
+    background: #d0f4de;
+    color: black;
+    border: none;
+    padding: 12px 18px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+#refresh-btn:hover {
+    background: #40916c;
+    color: #fff;
+    transform: scale(1.08);
+}
+
+/* ✅ Improved Footer Position */
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    position: relative;
+    bottom: 0;
+    margin-top: auto;
+    font-size: 13px;
+    color: #555;
+}
+
+/* 🎨 Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(135deg, #d9e2ec, #f5f7fa);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, 0.5);
+}
+
+/* 🔄 Blinking Effect for Loading Text */
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+
+/* 🚀 Custom Modal Styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.modal-content h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    font-size: 14px;
+    color: #555;
+}
+
+.modal-content button {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.modal-content button:hover {
+    background: #e68900;
+    transform: scale(1.05);
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeRush</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="popup-container">
+        <div class="header">
+            <img src="assets/icon.png" alt="CodeRush Logo" class="logo">
+            <h1>CodeRush</h1>
+            <p>Track Upcoming Coding Contests 👀</p>
+        </div>
+
+        <div id="tab-container">
+            <button class="platform-tab active-tab" data-platform="CodeForces">
+                <img src="assets/codeforces.png" alt="CodeForces"> CodeForces
+            </button>
+            <button class="platform-tab disabled-tab" disabled>
+                <img src="assets/codechef.png" alt="CodeChef"> CodeChef
+            </button>
+            <button class="platform-tab disabled-tab" disabled>
+                <img src="assets/leetcode.png" alt="LeetCode"> LeetCode
+            </button>
+            <button class="platform-tab disabled-tab" disabled>
+                <img src="assets/hackerrank.png" alt="HackerRank"> HackerRank
+            </button>
+            <button class="platform-tab disabled-tab" disabled>
+                <img src="assets/atcoder.png" alt="AtCoder"> AtCoder
+            </button>
+        </div>        
+
+        <button id="refresh-btn">🔄 Refresh</button>
+
+        <div id="contest-list">
+            <p class="loading-text">Contests will appear here...</p>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ for Competitive Programmers</p>
+            <i>By CodeTirtho97</i>
+        </footer>
+    </div>
+    <!-- 🚀 Custom Modal for Reminder Confirmation -->
+    <div id="reminder-modal" class="modal">
+        <div class="modal-content">
+            <h3>⏰ Reminder Set!</h3>
+            <p id="reminder-text"></p>
+            <button id="close-modal">OK</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
