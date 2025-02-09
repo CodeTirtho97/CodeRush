@@ -1,4 +1,6 @@
-# 🚀 CodeRush – Competitive Coding Tracker & Reminder  
+# CodeRush – Competitive Coding Tracker & Reminder
+
+![image](https://github.com/user-attachments/assets/446681b2-dbc7-407b-89e7-89343e8d4ba9)
 
 **Track upcoming coding contests across multiple platforms and set reminders with ease!** 🎯  
 Stay updated with contests from **CodeForces, CodeChef, LeetCode, HackerRank, and AtCoder**.  
@@ -15,7 +17,7 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 ✅ **Reminder functionality** to set contest alerts  
 ✅ **Google Calendar integration** to schedule contests  
 ✅ **Refresh button** to fetch latest contests  
-✅ **Robust error handling and graceful fallbacks**
+✅ **Robust error handling and graceful fallbacks**  
 
 ---
 
