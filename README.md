@@ -15,15 +15,7 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 ✅ **Reminder functionality** to set contest alerts  
 ✅ **Google Calendar integration** to schedule contests  
 ✅ **Refresh button** to fetch latest contests  
-✅ **Robust error handling and graceful fallbacks**  
-
----
-
-## 🖥️ Screenshots  
-
-| Home UI | Contests List | Reminder & Calendar |
-|---------|-------------|-------------------|
-| ![Home UI](assets/home.png) | ![Contests List](assets/contests.png) | ![Reminder & Calendar](assets/reminder.png) |
+✅ **Robust error handling and graceful fallbacks**
 
 ---
 
