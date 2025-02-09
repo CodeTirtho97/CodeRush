@@ -1,4 +1,6 @@
-# 🚀 CodeRush – Competitive Coding Tracker & Reminder  
+# CodeRush – Competitive Coding Tracker & Reminder
+
+![image](https://github.com/user-attachments/assets/446681b2-dbc7-407b-89e7-89343e8d4ba9)
 
 **Track upcoming coding contests across multiple platforms and set reminders with ease!** 🎯  
 Stay updated with contests from **CodeForces, CodeChef, LeetCode, HackerRank, and AtCoder**.  
