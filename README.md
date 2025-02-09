@@ -21,14 +21,6 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 
 ---
 
-## 🖥️ Screenshots  
-
-| Home UI | Contests List | Reminder & Calendar |
-|---------|-------------|-------------------|
-| ![Home UI](assets/home.png) | ![Contests List](assets/contests.png) | ![Reminder & Calendar](assets/reminder.png) |
-
----
-
 ## 🔧 Installation  
 
 1. **Clone the repository**:  
