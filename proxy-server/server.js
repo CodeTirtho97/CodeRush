@@ -30,14 +30,14 @@ app.get("/atcoder-contests", async (req, res) => {
                 
                 // ✅ Remove unwanted symbols from contest name
                 let name = $(columns[1]).text().trim().replace(/\s+/g, " ");
-                name = name.replace(/[@📢◉]/g, "").trim(); // Remove @, 📢 symbols
+                name = name.replace(/[@📢◉ⒶⒽ]/g, "").trim(); // Remove @, 📢 symbols
                 
                 // ✅ Fix contest names based on special symbols
-                if (name.startsWith("Ⓐ")) {
-                    name = name.replace("Ⓐ", "").trim() + " (Algorithm)";
-                } else if (name.startsWith("Ⓗ")) {
-                    name = name.replace("Ⓗ", "").trim() + " (Heuristic)";
-                }
+                // if (name.startsWith("Ⓐ")) {
+                //     name = name.replace("Ⓐ", "").trim() + " (Algorithm)";
+                // } else if (name.startsWith("Ⓗ")) {
+                //     name = name.replace("Ⓗ", "").trim() + " (Heuristic)";
+                // }
 
                 const url = "https://atcoder.jp" + $(columns[1]).find("a").attr("href");
                 const duration = $(columns[2]).text().trim();
