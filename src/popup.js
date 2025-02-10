@@ -14,50 +14,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const { fetchCodechefContests } = await import("./api/codechef.js");
     const { fetchAtcoderContests } = await import("./api/atcoder.js");
 
-    async function fetchAtcoderContests() {
-        return new Promise((resolve, reject) => {
-            chrome.runtime.sendMessage({ action: "fetchAtcoderContests" }, (response) => {
-                if (chrome.runtime.lastError) {
-                    console.error("Runtime error:", chrome.runtime.lastError);
-                    reject("Failed to communicate with background script.");
-                }
-
-                if (response && response.success) {
-                    resolve(parseAtcoderHTML(response.html));
-                } else {
-                    reject("Failed to fetch AtCoder contests: " + (response ? response.error : "No response"));
-                }
-            });
-        });
-    }
-
-    function parseAtcoderHTML(html) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-
-        const contests = [];
-        const contestRows = doc.querySelectorAll(".contest-table tbody tr");
-
-        contestRows.forEach(row => {
-            const cols = row.querySelectorAll("td");
-            if (cols.length < 4) return; // Skip invalid rows
-
-            const contestName = cols[1].innerText.trim();
-            const contestURL = "https://atcoder.jp" + cols[1].querySelector("a").getAttribute("href");
-            const startTime = cols[0].innerText.trim();
-            const duration = cols[2].innerText.trim();
-
-            contests.push({
-                name: contestName,
-                url: contestURL,
-                start: new Date(startTime).toISOString(),
-                duration: duration
-            });
-        });
-
-        return contests;
-    }
-
     async function loadContests(platform) {
         console.log(`Fetching ${platform} contests...`);
         contestList.innerHTML = `<p class="loading-text">Fetching contests...</p>`;
