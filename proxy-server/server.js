@@ -1,22 +1,29 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
 
 const app = express();
-app.use(cors()); // Enable CORS for all routes
-
 const PORT = process.env.PORT || 3000;
 
-// Proxy route to fetch AtCoder contests
+// Enable CORS for all requests
+app.use(cors());
+
+// Root route for testing
+app.get("/", (req, res) => {
+    res.send("✅ Proxy Server is Running!");
+});
+
+// AtCoder Contests Proxy Route
 app.get("/atcoder-contests", async (req, res) => {
     try {
-        const response = await axios.get("https://atcoder.jp/contests/");
-        res.send(response.data); // Send the raw HTML response
+        const response = await fetch("https://atcoder.jp/contests/");
+        const html = await response.text();
+        res.send(html);
     } catch (error) {
-        console.error("Error fetching AtCoder contests:", error.message);
         res.status(500).json({ error: "Failed to fetch AtCoder contests" });
     }
 });
 
-app.listen(PORT, () => console.log(`✅ Proxy server running on port ${PORT}`));
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});
