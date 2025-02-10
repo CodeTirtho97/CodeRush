@@ -27,14 +27,18 @@ app.get("/atcoder-contests", async (req, res) => {
             const columns = $(element).find("td");
             if (columns.length >= 3) {
                 const startTime = $(columns[0]).text().trim();
-                const name = $(columns[1]).text().trim();
+                let name = $(columns[1]).text().trim().replace(/\s+/g, " "); // ✅ Remove excessive spaces/tabs/newlines
                 const url = "https://atcoder.jp" + $(columns[1]).find("a").attr("href");
                 const duration = $(columns[2]).text().trim();
+
+                // Convert duration into hours and minutes
+                const durationParts = duration.split(":");
+                const formattedDuration = `${durationParts[0]} hours ${durationParts[1]} minutes`;
 
                 contests.push({
                     name,
                     start: startTime,
-                    duration,
+                    duration: formattedDuration,
                     url,
                 });
             }
