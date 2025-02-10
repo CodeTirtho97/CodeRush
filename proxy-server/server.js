@@ -27,13 +27,35 @@ app.get("/atcoder-contests", async (req, res) => {
             const columns = $(element).find("td");
             if (columns.length >= 3) {
                 const startTime = $(columns[0]).text().trim();
-                let name = $(columns[1]).text().trim().replace(/\s+/g, " "); // ✅ Remove excessive spaces/tabs/newlines
+                
+                // ✅ Remove unwanted symbols from contest name
+                let name = $(columns[1]).text().trim().replace(/\s+/g, " ");
+                name = name.replace(/[@📢]/g, "").trim(); // Remove @, 📢 symbols
+                
                 const url = "https://atcoder.jp" + $(columns[1]).find("a").attr("href");
                 const duration = $(columns[2]).text().trim();
 
-                // Convert duration into hours and minutes
+                // ✅ Convert duration into clean hours & minutes format
                 const durationParts = duration.split(":");
-                const formattedDuration = `${durationParts[0]} hours ${durationParts[1]} minutes`;
+
+                let formattedDuration = `${parseInt(durationParts[0], 10)} hours`;
+                if (parseInt(durationParts[1], 10) > 0) {
+                    formattedDuration += ` ${parseInt(durationParts[1], 10)} minutes`;
+                }
+
+                // ✅ Fix Large Hour Cases (e.g., 240 hours)
+                if (parseInt(durationParts[0], 10) >= 24) {
+                    const days = Math.floor(parseInt(durationParts[0], 10) / 24);
+                    const remainingHours = parseInt(durationParts[0], 10) % 24;
+                    
+                    formattedDuration = `${days} days`;
+                    if (remainingHours > 0) {
+                        formattedDuration += ` ${remainingHours} hours`;
+                    }
+                    if (parseInt(durationParts[1], 10) > 0) {
+                        formattedDuration += ` ${parseInt(durationParts[1], 10)} minutes`;
+                    }
+                }
 
                 contests.push({
                     name,
