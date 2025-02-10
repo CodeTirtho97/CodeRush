@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Dynamically import Platform API modules
     const { fetchCodeforcesContests } = await import("./api/codeforces.js");
     const { fetchCodechefContests } = await import("./api/codechef.js");
+    const { fetchAtcoderContests } = await import("./api/atcoder.js");
 
     async function fetchAtcoderContests() {
         return new Promise((resolve, reject) => {

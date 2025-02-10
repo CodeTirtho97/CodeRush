@@ -1,39 +1,22 @@
-async function fetchAtcoderContests() {
-    return new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage({ action: "fetchAtcoderContests" }, (response) => {
-            if (response.success) {
-                resolve(parseAtcoderHTML(response.html));
-            } else {
-                reject("Failed to fetch AtCoder contests: " + response.error);
-            }
-        });
-    });
-}
+export async function fetchAtcoderContests() {
+    try {
+        const response = await fetch("https://coderush-d1a0.onrender.com/atcoder-contests");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-// Function to extract contest data from AtCoder HTML
-function parseAtcoderHTML(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
+        const contests = await response.json();
 
-    const contests = [];
-    const contestRows = doc.querySelectorAll(".contest-table tbody tr");
+        // ✅ Convert date format for proper display
+        return contests.map(contest => ({
+            name: contest.name,
+            start: new Date(contest.start).toLocaleString(),  // Format the date
+            duration: contest.duration,
+            url: contest.url
+        }));
 
-    contestRows.forEach(row => {
-        const cols = row.querySelectorAll("td");
-        if (cols.length < 4) return; // Skip invalid rows
-
-        const contestName = cols[1].innerText.trim();
-        const contestURL = "https://atcoder.jp" + cols[1].querySelector("a").getAttribute("href");
-        const startTime = cols[0].innerText.trim();
-        const duration = cols[2].innerText.trim();
-
-        contests.push({
-            name: contestName,
-            url: contestURL,
-            start: new Date(startTime).toISOString(),
-            duration: duration
-        });
-    });
-
-    return contests;
+    } catch (error) {
+        console.error("❌ Error fetching AtCoder contests:", error);
+        return [];
+    }
 }
