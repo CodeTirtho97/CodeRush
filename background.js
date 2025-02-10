@@ -12,3 +12,21 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         priority: 2,
     });
 });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "fetchAtcoderContests") {
+        console.log("Fetching AtCoder contests...");
+
+        fetch("https://atcoder.jp/contests/")
+            .then(response => response.text())
+            .then(html => {
+                sendResponse({ success: true, html });
+            })
+            .catch(error => {
+                console.error("Error fetching AtCoder contests:", error);
+                sendResponse({ success: false, error: error.message });
+            });
+
+        return true; // Keep the message channel open for async response
+    }
+});

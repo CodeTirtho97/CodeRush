@@ -9,9 +9,53 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     console.log("Popup.js loaded successfully.");
 
-    // Dynamically import Plateform API module
+    // Dynamically import Platform API modules
     const { fetchCodeforcesContests } = await import("./api/codeforces.js");
     const { fetchCodechefContests } = await import("./api/codechef.js");
+
+    async function fetchAtcoderContests() {
+        return new Promise((resolve, reject) => {
+            chrome.runtime.sendMessage({ action: "fetchAtcoderContests" }, (response) => {
+                if (chrome.runtime.lastError) {
+                    console.error("Runtime error:", chrome.runtime.lastError);
+                    reject("Failed to communicate with background script.");
+                }
+
+                if (response && response.success) {
+                    resolve(parseAtcoderHTML(response.html));
+                } else {
+                    reject("Failed to fetch AtCoder contests: " + (response ? response.error : "No response"));
+                }
+            });
+        });
+    }
+
+    function parseAtcoderHTML(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        const contests = [];
+        const contestRows = doc.querySelectorAll(".contest-table tbody tr");
+
+        contestRows.forEach(row => {
+            const cols = row.querySelectorAll("td");
+            if (cols.length < 4) return; // Skip invalid rows
+
+            const contestName = cols[1].innerText.trim();
+            const contestURL = "https://atcoder.jp" + cols[1].querySelector("a").getAttribute("href");
+            const startTime = cols[0].innerText.trim();
+            const duration = cols[2].innerText.trim();
+
+            contests.push({
+                name: contestName,
+                url: contestURL,
+                start: new Date(startTime).toISOString(),
+                duration: duration
+            });
+        });
+
+        return contests;
+    }
 
     async function loadContests(platform) {
         console.log(`Fetching ${platform} contests...`);
@@ -23,15 +67,29 @@ document.addEventListener("DOMContentLoaded", async function () {
                 contests = await fetchCodeforcesContests();
             } else if (platform === "CodeChef") {
                 contests = await fetchCodechefContests();
+            } else if (platform === "AtCoder") {
+                contests = await fetchAtcoderContests();
             }
     
-            // ✅ Sort contests by start time (earliest first)
-            contests.sort((a, b) => new Date(a.start) - new Date(b.start));
+            console.log(`Raw ${platform} contests:`, contests); // ✅ Log raw API response
+    
+            // ✅ Set filtering limit to **14 days** (TEMPORARY)
+            const now = new Date();
+            const fourteenDaysLater = new Date();
+            fourteenDaysLater.setDate(now.getDate() + 14); // Increased to 14 days
+    
+            // ✅ Filter contests happening within the next **14** days
+            contests = contests.filter(contest => {
+                const contestDate = new Date(contest.start);
+                return contestDate >= now && contestDate <= fourteenDaysLater;
+            });
+    
+            console.log(`Filtered ${platform} contests:`, contests); // ✅ Log filtered contests
     
             contestList.innerHTML = "";
     
             if (contests.length === 0) {
-                contestList.innerHTML = "<p>No upcoming contests in the next 3 days.</p>";
+                contestList.innerHTML = "<p>No upcoming contests in the next 14 days.</p>";
             } else {
                 contests.forEach(contest => {
                     const contestCard = document.createElement("div");
@@ -42,19 +100,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     
                     contestCard.innerHTML = `
                         <h3>${contest.name}</h3>
-                        <p>📅 Starts: ${contest.start}</p>
+                        <p>📅 Starts: ${new Date(contest.start).toLocaleString()}</p>
                         <p>⏳ Duration: ${contest.duration}</p>
-
+    
                         <div class="contest-actions">
                             <a href="${contest.url}" target="_blank" class="contest-link">🔗 View Contest</a>
                             <button class="reminder-btn" title="Set Reminder" data-name="${contest.name}" data-start-time="${contest.start}">⏰</button>
                             <button class="calendar-btn" title="Add to Google Calendar" data-name="${contest.name}" data-start-time="${contest.start}" data-duration="${contest.duration}">📅</button>
                         </div>
                     `;
-
-                    contestCard.dataset.startTime = contest.start;
-                    contestCard.dataset.duration = contest.duration;
-
+    
                     contestList.appendChild(contestCard);
                 });
             }
@@ -64,99 +119,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // Function to set a reminder using Chrome Alarms
-    // Function to set a reminder using Chrome Alarms
-    function setReminder(contestName, startTime) {
-        const contestDate = new Date(startTime);
-        
-        if (isNaN(contestDate.getTime())) {
-            console.error("❌ Invalid contest start time:", startTime);
-            alert("Error: Invalid contest start time.");
-            return;
-        }
-    
-        const reminderTime = contestDate.getTime() - 5 * 60 * 1000; // 5 minutes before
-        
-        chrome.alarms.create(contestName, { when: reminderTime });
-    
-        chrome.storage.local.set({ [contestName]: startTime }, () => {
-            document.getElementById("reminder-text").innerText = `Reminder set for: ${contestName}`;
-            document.getElementById("reminder-modal").style.display = "block";
-        });
-    
-        console.log(`✅ Reminder set for ${contestName} at ${contestDate}`);
-    }
-    
-    // Close the modal when "OK" is clicked
-    document.getElementById("close-modal").addEventListener("click", function () {
-        document.getElementById("reminder-modal").style.display = "none";
-    });
-
-    // Function to add contest to Google Calendar
-    function addToGoogleCalendar(contestName, startTime, contestDuration) {
-        console.log(`Attempting to add ${contestName} to Google Calendar...`);
-
-        // ✅ Extract hours & minutes properly
-        const durationMatch = contestDuration.match(/(\d+)\s*hours?\s*(\d*)\s*minutes?/);
-        if (!durationMatch) {
-            console.error("❌ Invalid duration detected:", contestDuration);
-            alert("Error: Invalid contest duration.");
-            return;
-        }
-
-        const hours = parseInt(durationMatch[1] || "0", 10);
-        const minutes = durationMatch[2] ? parseInt(durationMatch[2], 10) : 0; // Handle missing minutes case
-        
-        // ✅ Convert duration to milliseconds
-        const durationMs = (hours * 60 + minutes) * 60 * 1000;
-
-        // ✅ Ensure startTime is a proper Date object
-        const startDate = new Date(startTime);
-        if (isNaN(startDate.getTime())) {
-            console.error("❌ Invalid start time:", startTime);
-            alert("Error: Invalid contest start time.");
-            return;
-        }
-
-        // ✅ Calculate end time correctly
-        const endDate = new Date(startDate.getTime() + durationMs);
-
-        // ✅ Format dates for Google Calendar (YYYYMMDDTHHmmSSZ)
-        const formatGoogleCalendarDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, "");
-
-        const startFormatted = formatGoogleCalendarDate(startDate);
-        const endFormatted = formatGoogleCalendarDate(endDate);
-
-        // ✅ Generate Google Calendar URL
-        const googleCalendarURL = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
-            contestName
-        )}&dates=${startFormatted}/${endFormatted}&details=Join this coding contest!`;
-
-        // ✅ Open Google Calendar in a new tab
-        window.open(googleCalendarURL, "_blank");
-
-        console.log(`✅ Added ${contestName} to Google Calendar successfully.`);
-    }
-
-    // Event listener for contest actions (Reminder & Calendar)
-    document.addEventListener("click", function (event) {
-        const contestCard = event.target.closest(".contest-card");
-        if (!contestCard) return;
-    
-        const contestName = contestCard.querySelector("h3").innerText;
-        const contestStartTime = contestCard.dataset.startTime;
-        const contestDuration = contestCard.dataset.duration;
-    
-        if (event.target.classList.contains("reminder-btn")) {
-            setReminder(contestName, contestStartTime);
-        } else if (event.target.classList.contains("calendar-btn")) {
-            console.log(`Adding ${contestName} to Google Calendar...`);
-            addToGoogleCalendar(contestName, contestStartTime, contestDuration);
-        }
-    });
-
     // Load CodeForces contests on startup
     loadContests("CodeForces");
+
     const tabs = document.querySelectorAll(".platform-tab");
     tabs.forEach(tab => {
         tab.addEventListener("click", function () {
@@ -166,7 +131,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     });
 
-    // Ensure Refresh button works properly
     refreshBtn.addEventListener("click", function () {
         const activePlatform = document.querySelector(".active-tab").dataset.platform;
         console.log(`Refresh button clicked, reloading ${activePlatform} contests...`);

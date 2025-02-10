@@ -3,7 +3,7 @@
     "name": "CodeRush - Competitive Coding Tracker & Reminder",
     "version": "1.0",
     "description": "Track upcoming coding contests and exams in one place!",
-    "permissions": ["alarms", "notifications", "storage"],
+    "permissions": ["alarms", "notifications", "storage", "background"],
     "host_permissions": ["https://codeforces.com/*", "https://www.codechef.com/*"],
     "background": {
       "service_worker": "background.js",
