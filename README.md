@@ -66,7 +66,6 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 
 📂 Project Structure
 
-    ```bash
     /CodeRush
     │── /assets              # Icons, logos, images
     │── /src
@@ -81,7 +80,6 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
     │── /server              # Proxy server for fetching contests
     │   ├── server.js        # Express.js backend for contest scraping
     │── README.md
-    ```
 
 ---
 
