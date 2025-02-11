@@ -3,8 +3,8 @@
 body {
     font-family: 'Poppins', sans-serif;
     width: 420px;
-    height: auto; /* Expands dynamically */
-    min-height: 700px; /* Ensures enough space */
+    height: auto;
+    min-height: 700px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -13,8 +13,8 @@ body {
     background: linear-gradient(135deg, #f5f7fa, #dce4f0);
     color: #333;
     border-radius: 10px;
-    overflow-x: hidden; /* Removes horizontal scroll */
-    overflow-y: auto; /* Allows proper scrolling */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* 🔹 Main Popup Container */
@@ -64,16 +64,14 @@ p {
     margin-bottom: 12px;
     color: #555;
     text-align: center;
-    display: block;
 }
 
 /* 🔹 Contest List */
 #contest-list {
     flex-grow: 1;
     width: 100%;
-    height: auto; /* Allows full expansion */
-    max-height: none; /* Prevents fixed height causing scroll */
-    overflow-y: visible; /* Removes internal scrolling */
+    height: auto;
+    overflow-y: visible;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     padding: 15px;
@@ -113,7 +111,6 @@ p {
     color: #444;
 }
 
-/* 🔹 View Contest Button */
 /* 🔹 Contest Card Actions */
 .contest-actions {
     display: flex;
@@ -156,7 +153,6 @@ p {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* 🎨 Hover Effect: Show Functionality */
 .reminder-btn:hover {
     background: #52b788;
     transform: scale(1.1);
@@ -194,7 +190,6 @@ p {
     cursor: pointer;
     border-radius: 8px;
     transition: 0.3s ease-in-out;
-    flex-shrink: 0;
 }
 
 .platform-tab img {
@@ -263,15 +258,9 @@ footer {
     background: rgba(100, 100, 100, 0.5);
 }
 
-/* 🔄 Blinking Effect for Loading Text */
-@keyframes blink {
-    from { opacity: 1; }
-    to { opacity: 0.5; }
-}
-
 /* 🚀 Custom Modal Styling */
 .modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     z-index: 999;
     left: 50%;
@@ -284,31 +273,6 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     padding: 20px;
-    backdrop-filter: blur(10px);
-}
-
-.modal-content h3 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.modal-content p {
-    font-size: 14px;
-    color: #555;
-}
-
-.modal-content button {
-    background: #ff9800;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: 0.3s;
 }
 
 .modal-content button:hover {
