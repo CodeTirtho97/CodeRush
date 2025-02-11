@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 const cheerio = require("cheerio");
+const puppeteer = require("puppeteer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +15,7 @@ app.get("/", (req, res) => {
     res.send("✅ Proxy Server is Running!");
 });
 
-// ✅ Scrape AtCoder Contests (Existing)
+// Scrape AtCoder contests
 app.get("/atcoder-contests", async (req, res) => {
     try {
         const response = await axios.get("https://atcoder.jp/contests/");
@@ -30,21 +31,14 @@ app.get("/atcoder-contests", async (req, res) => {
                 
                 // ✅ Remove unwanted symbols from contest name
                 let name = $(columns[1]).text().trim().replace(/\s+/g, " ");
-                name = name.replace(/[@📢◉ⒶⒽ]/g, "").trim(); 
-
-                // ✅ Modify contest name based on type
-                if (name.includes("Ⓗ")) {
-                    name = name.replace("Ⓗ", "").trim() + " (Heuristic)";
-                }
-                if (name.includes("Ⓐ")) {
-                    name = name.replace("Ⓐ", "").trim() + " (Algorithm)";
-                }
-
+                name = name.replace(/[@📢◉ⒶⒽ]/g, "").trim(); // Remove unwanted symbols
+                
                 const url = "https://atcoder.jp" + $(columns[1]).find("a").attr("href");
                 const duration = $(columns[2]).text().trim();
 
-                // ✅ Convert duration into clean format
+                // ✅ Convert duration into clean hours & minutes format
                 const durationParts = duration.split(":");
+
                 let formattedDuration = `${parseInt(durationParts[0], 10)} hours`;
                 if (parseInt(durationParts[1], 10) > 0) {
                     formattedDuration += ` ${parseInt(durationParts[1], 10)} minutes`;
@@ -80,39 +74,50 @@ app.get("/atcoder-contests", async (req, res) => {
     }
 });
 
-// ✅ Scrape HackerRank Contests (New)
+// Scrape HackerRank contests using Puppeteer
 app.get("/hackerrank-contests", async (req, res) => {
     try {
-        const response = await axios.get("https://www.hackerrank.com/contests");
-        const html = response.data;
-        const $ = cheerio.load(html);
-
-        let contests = [];
-
-        $(".contests-active .contest-card").each((index, element) => {
-            const name = $(element).find(".contest-name").text().trim();
-            const url = "https://www.hackerrank.com" + $(element).find("a").attr("href");
-
-            const startTimeAttr = $(element).find(".contest-duration").attr("data-starttime");
-            const durationAttr = $(element).find(".contest-duration").attr("data-duration");
-
-            if (!startTimeAttr || !durationAttr) return;
-
-            const start = new Date(parseInt(startTimeAttr) * 1000).toISOString();
-            const durationMinutes = parseInt(durationAttr) / 60;
-
-            let formattedDuration = `${Math.floor(durationMinutes / 60)} hours`;
-            if (durationMinutes % 60 > 0) {
-                formattedDuration += ` ${durationMinutes % 60} minutes`;
-            }
-
-            contests.push({
-                name,
-                start,
-                duration: formattedDuration,
-                url,
-            });
+        console.log("Launching Puppeteer to scrape HackerRank...");
+        const browser = await puppeteer.launch({
+            headless: true, // Run in headless mode
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
         });
+
+        const page = await browser.newPage();
+        await page.goto("https://www.hackerrank.com/contests", {
+            waitUntil: "networkidle2",
+        });
+
+        console.log("Page loaded, extracting contest details...");
+
+        // Scrape contest data
+        const contests = await page.evaluate(() => {
+            let contestElements = document.querySelectorAll(".contest-card");
+            let contestData = [];
+
+            contestElements.forEach((contest) => {
+                let nameElement = contest.querySelector("h3");
+                let dateElement = contest.querySelector("span[aria-label]");
+                let linkElement = contest.querySelector("a");
+
+                if (nameElement && dateElement && linkElement) {
+                    contestData.push({
+                        name: nameElement.innerText.trim(),
+                        start: dateElement.innerText.trim(),
+                        url: linkElement.href,
+                    });
+                }
+            });
+
+            return contestData;
+        });
+
+        console.log("Closing Puppeteer...");
+        await browser.close();
+
+        if (contests.length === 0) {
+            return res.json({ message: "No upcoming contests found." });
+        }
 
         res.json(contests);
     } catch (error) {
