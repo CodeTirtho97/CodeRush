@@ -17,7 +17,7 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 ✅ **Reminder functionality** to set contest alerts  
 ✅ **Google Calendar integration** to schedule contests  
 ✅ **Refresh button** to fetch latest contests  
-✅ **Robust error handling and graceful fallbacks**  
+✅ **Optimized API fetching via a proxy server**  
 
 ---
 
@@ -41,7 +41,7 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 ## ⚡ Usage Guide  
 
 ### 🏆 Fetch Contests  
-- Click on a **platform tab** (e.g., CodeForces, CodeChef).  
+- Click on a platform tab (e.g., CodeForces, CodeChef, AtCoder).  
 - Press **"Refresh"** to get the latest contests.  
 
 ### ⏰ Set a Reminder  
@@ -60,6 +60,7 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 - **Chrome Extension APIs** – Background scripts, notifications  
 - **Google Calendar API** – Calendar integration  
 - **Fetch API** – Fetching contest data
+- **Express.js, Cheerio, Axios** – Proxy Server for contest data fetching
 
 ---
 
@@ -67,18 +68,18 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 
     ```bash
     /CodeRush
-    │── /assets          # Icons, logos, images
+    │── /assets              # Icons, logos, images
     │── /src
-    │   ├── popup.html   # Main UI
-    │   ├── popup.js     # Handles contest fetching & reminders
-    │   ├── styles.css   # UI Styling
-    │   ├── manifest.json # Chrome extension config
+    │   ├── popup.html       # Main UI
+    │   ├── popup.js         # Handles contest fetching & reminders
+    │   ├── styles.css       # UI Styling
+    │   ├── manifest.json    # Chrome extension config
     │   ├── /api
     │   │   ├── codeforces.js  # Fetch contests from CodeForces
-    │   │   ├── codechef.js    # Fetch contests from CodeChef (TBD)
-    │   │   ├── leetcode.js    # Fetch contests from LeetCode (TBD)
-    │   │   ├── hackerrank.js  # Fetch contests from HackerRank (TBD)
-    │   │   ├── atcoder.js     # Fetch contests from AtCoder (TBD)
+    │   │   ├── codechef.js    # Fetch contests from CodeChef
+    │   │   ├── atcoder.js     # Fetch contests from AtCoder
+    │── /server              # Proxy server for fetching contests
+    │   ├── server.js        # Express.js backend for contest scraping
     │── README.md
     ```
 
@@ -87,12 +88,11 @@ Set **reminders** and add contests directly to **Google Calendar** in one click!
 ## 🚧 Roadmap  
 
 ### 🔹 Next Steps:  
-- ✅ **Fix UI responsiveness** *(DONE 🎉)*  
-- ✅ **Improve scrollbar & background styles** *(DONE 🎉)*  
-- ✅ **Add Reminder & Google Calendar functionality** *(DONE 🎉)*  
-- 🚀 **Integrate CodeChef, LeetCode, HackerRank, AtCoder APIs**  
-- 🚀 **Allow users to customize reminder timings**  
-- 🚀 **Dark Mode toggle**  
+- ✅ **Fix UI responsiveness**
+- ✅ **Improve scrollbar & background styles**
+- ✅ **Add Reminder & Google Calendar functionality**  
+- ✅ **Integrate CodeChef, LeetCode, HackerRank, AtCoder APIs**  
+- ✅ **Dark Mode toggle**  
 
 ---
 

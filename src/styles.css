@@ -279,3 +279,132 @@ footer {
     background: #e68900;
     transform: scale(1.05);
 }
+
+
+/* 🔹 Dark Mode Styling */
+.dark-mode {
+    background: #181818; /* Slightly lighter than black */
+    color: #e0e0e0; /* Light grey text for readability */
+}
+
+/* 🔹 Ensure text is clearly visible in dark mode */
+.dark-mode h1, 
+.dark-mode p, 
+.dark-mode footer p, 
+.dark-mode .platform-tab,
+.dark-mode .contest-card p,
+.dark-mode .contest-card h3 {
+    color: #ffffff;
+}
+
+/* 🔹 Dark Mode Container */
+.dark-mode #popup-container {
+    background: #222222;
+    border: 1px solid #333; /* Slight border for visibility */
+}
+
+/* 🔹 Contest List in Dark Mode */
+.dark-mode #contest-list {
+    background: #252525; /* Slightly lighter than black */
+    color: #f0f0f0;
+    border: 1px solid #444;
+}
+
+/* 🔹 Contest Cards */
+.dark-mode .contest-card {
+    background: #2a2a2a; /* High contrast */
+    color: #e0e0e0;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* 🔹 Footer in Dark Mode */
+.dark-mode footer {
+    color: #d0d0d0;
+}
+
+/* 🔹 Tabs in Dark Mode */
+.dark-mode .platform-tab {
+    background: #444;
+    border: 1px solid #666;
+}
+
+.dark-mode .active-tab {
+    background: #ff9800;
+}
+
+/* ✅ Dark Mode Toggle Switch */
+.switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    width: 40px;
+    height: 20px;
+    background: #ccc;
+    border-radius: 50px;
+    position: relative;
+    transition: 0.4s;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    top: 1px;
+    left: 2px;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background: #ff9800;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+    background: #222;
+}
+
+/* 🔹 Dark Mode Toggle Label */
+.toggle-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* 🎨 Fix Reminder Modal Background in Dark Mode */
+body.dark-mode .modal {
+    background: rgba(40, 40, 40, 0.95); /* Dark mode background */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Soft border */
+}
+
+/* 🎨 Fix Modal Text Color */
+body.dark-mode .modal-content h3 {
+    color: #ffcc00; /* Yellow for better visibility */
+}
+
+body.dark-mode .modal-content p {
+    color: #ddd;
+}
+
+/* 🎨 Fix Modal OK Button */
+body.dark-mode .modal-content button {
+    background: #ff9800;
+    color: white;
+}
+
+body.dark-mode .modal-content button:hover {
+    background: #e68900;
+    transform: scale(1.05);
+}

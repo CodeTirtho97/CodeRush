@@ -1,6 +1,24 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const contestList = document.getElementById("contest-list");
     const refreshBtn = document.getElementById("refresh-btn");
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+    // ✅ Load dark mode preference from local storage
+    if (localStorage.getItem("dark-mode") === "enabled") {
+        document.body.classList.add("dark-mode");
+        darkModeToggle.checked = true;
+    }
+
+    darkModeToggle.addEventListener("change", function () {
+        document.body.classList.toggle("dark-mode");
+
+        // ✅ Store dark mode preference
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("dark-mode", "enabled");
+        } else {
+            localStorage.setItem("dark-mode", "disabled");
+        }
+    });
 
     if (!contestList || !refreshBtn) {
         console.error("Error: Missing contest-list or refresh button in popup.html.");
